@@ -32,10 +32,13 @@ const DataTable = () => {
   };
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
+      console.log(selectedRows, "selectedRows...");
+      setSelectedRows(selectedRows);
+
       console.log(
         `selectedRowKeys: ${selectedRowKeys}`,
         "selectedRows: ",
-        setSelectedRows(selectedRows)
+        selectedRows
       );
     },
     getCheckboxProps: (record) => ({
@@ -46,8 +49,16 @@ const DataTable = () => {
   };
 
   const handleDelete = (value) => {
+    console.log(selecteRows);
     const dataSource = [...modifiedData];
     const filteredData = dataSource.filter((item) => item.id !== value.id);
+    setGridData(filteredData);
+  };
+  const handleSelectedRowsDeletion = () => {
+    const dataSource = [...modifiedData];
+    const filteredData = dataSource.filter((ad) =>
+      selecteRows.every((fd) => fd.id !== ad.id)
+    );
     setGridData(filteredData);
   };
 
@@ -347,6 +358,14 @@ const DataTable = () => {
           loading={loading}
           onChange={handleChange}
         />
+        <Button
+          style={{ marginBottom: "2%" }}
+          type="primary"
+          danger
+          onClick={handleSelectedRowsDeletion}
+        >
+          Delete Selected
+        </Button>
       </Form>
     </div>
   );
